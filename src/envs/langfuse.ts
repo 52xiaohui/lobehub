@@ -2,8 +2,18 @@
 import { createEnv } from '@t3-oss/env-nextjs';
 import { z } from 'zod';
 
+const parseEnableLangfuse = (value?: string) => {
+  const normalized = value?.trim().toLowerCase();
+
+  if (!normalized) return false;
+
+  // Accept the same truthy values used across env configs.
+  return normalized === '1' || normalized === 'true';
+};
+
 export const getLangfuseConfig = () => {
-  const enableLangfuseEnv = process.env.ENABLE_LANGFUSE?.trim()?.toLowerCase();
+  const enableLangfuse = parseEnableLangfuse(process.env.ENABLE_LANGFUSE);
+  // LANGFUSE_HOST takes precedence, LANGFUSE_BASE_URL is kept as a compatibility alias.
   const langfuseHost =
     process.env.LANGFUSE_HOST ||
     process.env.LANGFUSE_BASE_URL ||
@@ -11,7 +21,7 @@ export const getLangfuseConfig = () => {
 
   return createEnv({
     runtimeEnv: {
-      ENABLE_LANGFUSE: enableLangfuseEnv === '1' || enableLangfuseEnv === 'true',
+      ENABLE_LANGFUSE: enableLangfuse,
       LANGFUSE_SECRET_KEY: process.env.LANGFUSE_SECRET_KEY || '',
       LANGFUSE_PUBLIC_KEY: process.env.LANGFUSE_PUBLIC_KEY || '',
       LANGFUSE_HOST: langfuseHost,
