@@ -3,12 +3,18 @@ import { createEnv } from '@t3-oss/env-nextjs';
 import { z } from 'zod';
 
 export const getLangfuseConfig = () => {
+  const enableLangfuseEnv = process.env.ENABLE_LANGFUSE?.trim().toLowerCase();
+  const langfuseHost =
+    process.env.LANGFUSE_HOST ||
+    process.env.LANGFUSE_BASE_URL ||
+    'https://cloud.langfuse.com';
+
   return createEnv({
     runtimeEnv: {
-      ENABLE_LANGFUSE: process.env.ENABLE_LANGFUSE === '1',
+      ENABLE_LANGFUSE: enableLangfuseEnv === '1' || enableLangfuseEnv === 'true',
       LANGFUSE_SECRET_KEY: process.env.LANGFUSE_SECRET_KEY || '',
       LANGFUSE_PUBLIC_KEY: process.env.LANGFUSE_PUBLIC_KEY || '',
-      LANGFUSE_HOST: process.env.LANGFUSE_HOST || 'https://cloud.langfuse.com',
+      LANGFUSE_HOST: langfuseHost,
     },
 
     server: {

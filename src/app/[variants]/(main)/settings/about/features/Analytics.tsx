@@ -7,13 +7,18 @@ import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { FORM_STYLE } from '@/const/layoutTokens';
+import { useServerConfigStore } from '@/store/serverConfig';
+import { serverConfigSelectors } from '@/store/serverConfig/selectors';
 import { useUserStore } from '@/store/user';
 import { userGeneralSettingsSelectors } from '@/store/user/selectors';
 
 const Analytics = memo(() => {
   const { t } = useTranslation('setting');
+  const telemetryEnabled = useServerConfigStore(serverConfigSelectors.enabledTelemetryChat);
   const checked = useUserStore(userGeneralSettingsSelectors.telemetry);
   const updateGeneralConfig = useUserStore((s) => s.updateGeneralConfig);
+
+  if (!telemetryEnabled) return null;
 
   const items: FormGroupItemType = {
     children: [
