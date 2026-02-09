@@ -14,6 +14,7 @@ afterEach(() => {
   delete process.env.LANGFUSE_HOST;
   delete process.env.LANGFUSE_BASE_URL;
   vi.resetModules();
+  vi.restoreAllMocks();
 });
 
 describe('getLangfuseConfig', () => {

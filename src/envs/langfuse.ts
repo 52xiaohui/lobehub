@@ -3,7 +3,7 @@ import { createEnv } from '@t3-oss/env-nextjs';
 import { z } from 'zod';
 
 export const getLangfuseConfig = () => {
-  const enableLangfuseEnv = process.env.ENABLE_LANGFUSE?.trim().toLowerCase();
+  const enableLangfuseEnv = process.env.ENABLE_LANGFUSE?.trim()?.toLowerCase();
   const langfuseHost =
     process.env.LANGFUSE_HOST ||
     process.env.LANGFUSE_BASE_URL ||
